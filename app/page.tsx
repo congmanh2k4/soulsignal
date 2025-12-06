@@ -15,7 +15,7 @@ export default function Home() {
           </p>
           <div className="flex flex-col gap-3 sm:flex-row">
             <Link
-              href="/auth/sign-up"
+              href="/sign-up"
               className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 via-rose-500 to-amber-400 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:brightness-110"
             >
               Bắt đầu miễn phí
