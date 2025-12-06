@@ -21,6 +21,12 @@ export default function Home() {
               Bắt đầu miễn phí
             </Link>
             <Link
+              href="/sign-in"
+              className="inline-flex items-center justify-center rounded-full border border-slate-700 px-6 py-3 text-sm font-semibold text-slate-200 transition hover:border-slate-500 hover:text-white"
+            >
+              Đăng nhập
+            </Link>
+            <Link
               href="/community"
               className="inline-flex items-center justify-center rounded-full border border-slate-700 px-6 py-3 text-sm font-semibold text-slate-200 transition hover:border-slate-500 hover:text-white"
             >
