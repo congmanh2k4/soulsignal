@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getCurrentUserId, useSupabaseBrowser } from '@/lib/supabase/client';
 
 type MatchRow = {
@@ -14,7 +14,7 @@ type MatchRow = {
 type ProfileRow = {
   user_id: string;
   display_name: string;
-  personality_answers?: any;
+  personality_answers?: Record<string, unknown>[] | Record<string, unknown> | null;
 };
 
 export default function DashboardPage() {
@@ -167,7 +167,9 @@ function CompatibilityBadge({ percent }: { percent: number }) {
   );
 }
 
-function estimateCompatibility(personality: any): number {
+function estimateCompatibility(
+  personality: Record<string, unknown>[] | Record<string, unknown> | null | undefined
+): number {
   // Rough heuristic: use answer count variance to create a pseudo score; fallback 62
   if (!personality) return 62;
   if (Array.isArray(personality)) {

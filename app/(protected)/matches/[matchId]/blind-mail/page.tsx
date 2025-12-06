@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getCurrentUserId, useSupabaseBrowser } from '@/lib/supabase/client';
 
 interface BlindMailPageProps {
@@ -29,7 +29,7 @@ export default function BlindMailPage({ params }: BlindMailPageProps) {
     // Rotate icebreaker at mount for freshness
     setSuggestion(icebreakers[Math.floor(Math.random() * icebreakers.length)]);
     getCurrentUserId(supabase).then(setUserId);
-  }, []);
+  }, [supabase]);
 
   const sendLetter = async () => {
     if (!body.trim() || !userId) return;
