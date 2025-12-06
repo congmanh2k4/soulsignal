@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSupabaseBrowser } from '@/lib/supabase/client';
 
 export default function SignUpPage() {
@@ -8,9 +8,17 @@ export default function SignUpPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [igHandle, setIgHandle] = useState('');
+   const [redirectTo, setRedirectTo] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Compute redirect URL on client to avoid window undefined during SSR
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setRedirectTo(`${window.location.origin}/callback`);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,6 +33,7 @@ export default function SignUpPage() {
           data: {
             real_instagram: igHandle.trim(),
           },
+          emailRedirectTo: redirectTo,
         },
       });
       if (signError) throw signError;
