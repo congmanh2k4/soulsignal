@@ -13,6 +13,23 @@ export default function SignUpPage() {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const signInWithGoogle = async (redirect?: string) => {
+    setError(null);
+    setMessage(null);
+    try {
+      const { error: authError } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: redirect,
+        },
+      });
+      if (authError) throw authError;
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'OAuth failed';
+      setError(msg);
+    }
+  };
+
   // Compute redirect URL on client to avoid window undefined during SSR
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -55,6 +72,15 @@ export default function SignUpPage() {
           Join with email, keep your IG handle private until both of you choose to reveal.
         </p>
       </div>
+
+      <button
+        type="button"
+        onClick={() => signInWithGoogle(redirectTo)}
+        className="flex w-full items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-slate-400"
+      >
+        <span role="img" aria-label="google">🔐</span>
+        Continue with Google
+      </button>
 
       <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="space-y-2">

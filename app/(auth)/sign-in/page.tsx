@@ -21,6 +21,26 @@ export default function SignInPage() {
     }
   }, []);
 
+  const signInWithGoogle = async (redirect?: string) => {
+    setError(null);
+    setMessage(null);
+    setLoading(true);
+    try {
+      const { error: authError } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: redirect,
+        },
+      });
+      if (authError) throw authError;
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'OAuth failed';
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSignIn = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -51,6 +71,15 @@ export default function SignInPage() {
       </div>
 
       <form onSubmit={handleSignIn} className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <button
+          type="button"
+          onClick={() => signInWithGoogle(redirectTo)}
+          className="flex w-full items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-slate-400"
+        >
+          <span role="img" aria-label="google">🔐</span>
+          Continue with Google
+        </button>
+
         <div className="space-y-2">
           <label htmlFor="email" className="text-sm font-medium text-slate-800">
             Email
